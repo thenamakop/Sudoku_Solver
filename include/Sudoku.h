@@ -14,7 +14,7 @@ typedef struct Box{
     int numbers;
     int possible[9];
     int solveable;
-    struct Box * next;
+    struct Box * next;  
 }Box;
 
 typedef struct Square{
@@ -45,8 +45,9 @@ int checkPuzzle(Square *** sudoku);
 
 int solveSquare(Square * square);
 
-/* Box Functions */
+//Box Functions
 Box ** createBoxes();
 int updateBoxes(Square *** sudoku, int row, int column);
+
 
 #endif
