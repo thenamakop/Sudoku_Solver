@@ -7,8 +7,7 @@ Box ** createBoxes()//this function is for alloting memmory of the smaller 3x3 b
     Box ** boxes;//mallocing everything here
     boxes = malloc(sizeof(Box*)*9);//box->9 as there are 9 boxes in a puzzle
 
-    for (x = 0; x < 9; x++)
-    {
+    for (x = 0; x < 9; x++){
         boxes[x] = malloc(sizeof(Box));
         boxes[x]->squares = malloc(sizeof(Square*)*9);//9 square in a box
         boxes[x]->numbers = 0;//and there are 0 numbers in any square of the puzzle at the start
@@ -17,6 +16,7 @@ Box ** createBoxes()//this function is for alloting memmory of the smaller 3x3 b
         //initializing the possible array
         for (y = 0; y < 9; y++){
             boxes[x]->possible[y] = 0;
+        }
     }
 
     return boxes;
