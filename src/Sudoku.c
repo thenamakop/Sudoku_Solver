@@ -17,6 +17,9 @@ int main(){
     checkPuzzle(sudoku); /*this function will loop though every single number/square
                      and say/return have we found any numbers that have
                      solveble = 1 therefore tha tnumber will be placed there*/
+   checkPuzzle(sudoku);
+   checkPuzzle(sudoku);
+
     printf("\n\n");
 
     printPuzzle(sudoku);

@@ -3,9 +3,14 @@
 
 Square *** setUpPuzzle(int ** puzzle){
     Square *** sudoku;
+    Box ** boxes;
     int i, j, x;
+    int currentBox = 0;
+
     sudoku = (Square***)malloc(sizeof(Square**)*9);
+    boxes = createBoxes();
     
+    //setting up our puzzle
     //loop through the rows
     for(i=0; i<SIZE_ROWS; i++){
         // malloc space for each row
@@ -22,10 +27,31 @@ Square *** setUpPuzzle(int ** puzzle){
             sudoku[i][j]->column = j;
             sudoku[i][j]->solveable =9;
 
+            //we want to add this square to the box and this box to the square (as they both reference each other)
+            boxes[currentBox]->squares[boxes[currentBox]->numbers] = sudoku[i][j];
+            sudoku[i][j]->box = boxes[currentBox];
+            boxes[currentBox]->numbers++;
+
             //replacing bit-wise thing with an initialization loop to set all to zero
             for (x=0; x< SIZE_ROWS; x++){
                 sudoku[i][j]->possible[x] = 0;
             }
+            if(j==2){
+                currentBox++;
+            }
+            if(j==5){
+                currentBox++;
+            }
+        }
+        currentBox -= 2; //Using this to reset back to the first box
+        //Special Case: when in Box[2] & row [2] we want to go to the
+        //next box i.e. Box[3] and not box[0]
+        if(i == 2){
+            currentBox = 3;
+        }
+        //Likewise for Box[5] & row[5] goto Box[6]
+        if(i==5){
+            currentBox = 6;
         }
     }
     
@@ -35,8 +61,9 @@ Square *** setUpPuzzle(int ** puzzle){
         for(j=0; j<SIZE_COLUMNS; j++){
            //does this number have a value and what dows it tell
            if(sudoku[i][j]->number != 0){
-                sudoku[i][j]->solveable;
+                sudoku[i][j]->solveable = 0;
                 updateSudoku(sudoku, i, j);
+                updateBoxes(sudoku, i, j);
                 UNSOLVED--;
            }
         }
@@ -77,6 +104,7 @@ int checkPuzzle(Square *** sudoku){
                 //since we solved a square now that particular no. cant be repeated in
                 //column or that row so we call updateSudoku to update the parameters
                 updateSudoku(sudoku, i, j);
+                updateBoxes(sudoku, i, j);
             }   
         }
     }
