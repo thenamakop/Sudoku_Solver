@@ -29,7 +29,6 @@ typedef struct Square{
                     the count becomes from 000000000 -> 111101011
                     */
     int possible[9];//shifting from bit representation to array representation
-
     int solveable;//this variable indicates how many numbers are unknown(kind of)
     Box * box;
     int row ;

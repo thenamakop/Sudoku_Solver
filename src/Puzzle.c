@@ -26,6 +26,12 @@ Square *** setUpPuzzle(int ** puzzle){
             sudoku[i][j]->row = i;
             sudoku[i][j]->column = j;
             sudoku[i][j]->solveable =9;
+            
+            //we want to add this sqaure to the box and this box to the square (as they both reference each other)
+            boxes[currentBox]->squares[boxes[currentBox]->numbers] = sudoku[i][j];
+            sudoku[i][j]->box = boxes[currentBox];
+            boxes[currentBox]->numbers++;
+
 
             //we want to add this square to the box and this box to the square (as they both reference each other)
             boxes[currentBox]->squares[boxes[currentBox]->numbers] = sudoku[i][j];
@@ -36,12 +42,14 @@ Square *** setUpPuzzle(int ** puzzle){
             for (x=0; x< SIZE_ROWS; x++){
                 sudoku[i][j]->possible[x] = 0;
             }
+          
             if(j==2){
                 currentBox++;
             }
             if(j==5){
                 currentBox++;
             }
+
         }
         currentBox -= 2; //Using this to reset back to the first box
         //Special Case: when in Box[2] & row [2] we want to go to the
@@ -128,6 +136,7 @@ int ** createPuzzle(){
                        0,5,0,   0,0,6,  0,0,0,
                        6,0,0,   0,2,8,  0,7,9,
                        0,0,0,   1,0,0,  8,6,0 };
+    //Planning to add direct input based addition of sudoku puzzle rather than having to edit the code manually
     
     puzzle = (int**)malloc(sizeof(int*)*9);
 

@@ -1,5 +1,6 @@
 #include "Sudoku.h"
 
+
 Box ** createBoxes()//this function is for alloting memmory of the smaller 3x3 boxes of the puzzle
 {
     int x, y;///counter variable
@@ -14,12 +15,13 @@ Box ** createBoxes()//this function is for alloting memmory of the smaller 3x3 b
         boxes[x]->solveable = 9;//start this at 9 and then we find a square that is solved and decrement this valuve with respect to a box
 
         //initializing the possible array
-        for (y = 0; y < 9; y++)
+        for (y = 0; y < 9; y++){
             boxes[x]->possible[y] = 0;
     }
 
     return boxes;
 }
+
 
 int updateBoxes(Square *** sudoku, int row, int column)
 {
@@ -33,8 +35,7 @@ int updateBoxes(Square *** sudoku, int row, int column)
         if (box->squares[x]->possible[number - 1] == 0)
         {
             box->squares[x]->solveable--;//one step closer to finding the solution
-            box->squares[x]->possible[number - 1] = 1;
-            //when we get fown to 8 1s and 1 zero in the possible array then we can say we found the solution for the square
+            box->squares[x]->possible[number - 1] = 1;//when we get fown to 8 1s and 1 zero in the possible array then we can say we found the solution for the square
         }
     }
 
