@@ -1,6 +1,52 @@
 #include "Sudoku.h"
-
-
+/*
+ * int boxSingles(Square *** sudoku, Box ** boxes)
+ *
+ * funtion to loop through all boxes and search 
+ * for a number within the box that only apppears
+ * as possible once
+ * */
+int boxSingles(Square *** sudoku, Box ** boxes){
+    int i,j,x; // Loop Variable
+    int count; //Counter Variable
+    int temp; //Temporary Var
+    //loop through boxes
+    for(i=0; i<9; i++){
+        //loop through possible array
+        for(j=0; j<9; j++){
+            //Trying to keep track of the number times a number appeared in a box
+            count = 0;
+            //Loop THrough Squares
+            for(x = 0; x<9; x++){
+                if(boxes[i]->squares[x]->number != 0){
+                    continue;
+                }
+                if(boxes[i]->squares[x]->possible[j] == 0){
+                    count++;
+                    temp = x;
+                }
+                if(count==2){//Unsolvable for that Square
+                    break;
+                }
+            }
+            if(count==1){   //Its Solvable
+                boxes[i]->squares[temp]->number = j+1;
+                UNSOLVED--;
+                boxes[i]->squares[temp]->solveable = 0;
+                
+                updateSudoku(sudoku, boxes[i]->squares[temp]->row, boxes[i]->squares[temp]->column);
+                
+                return 1; //On Success
+            }
+        }
+    }
+    return 0; //On Failure
+}
+/*
+ * Box ** vreateBosex()
+ *
+ * Function to create boxes wile setting up the sudoku puzzle
+ * */
 Box ** createBoxes()//this function is for alloting memmory of the smaller 3x3 boxes of the puzzle
 {
     int x, y;///counter variable
@@ -22,6 +68,11 @@ Box ** createBoxes()//this function is for alloting memmory of the smaller 3x3 b
     return boxes;
 }
 
+/*
+ * int updateBoxes
+ *
+ * Once A square is solved within a box all other
+ * */
 
 int updateBoxes(Square *** sudoku, int row, int column)
 {

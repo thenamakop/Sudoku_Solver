@@ -1,7 +1,23 @@
 #include "Sudoku.h"
 
+Sudoku * createSudoku(Square *** squares, Box ** boxes){
+    Sudoku * sudoku;
+    sudoku = malloc(sizeof(Sudoku));
 
-Square *** setUpPuzzle(int ** puzzle){
+    sudoku->squares = squares;
+    sudoku->boxes = boxes;
+
+    return sudoku;
+    
+}
+
+/*
+ * Sudoku * setUpPuzzle
+ *
+ * Initial Puzlle Creation
+ * */
+
+Sudoku * setUpPuzzle(int ** puzzle){
     Square *** sudoku;
     Box ** boxes;
     int i, j, x;
@@ -33,16 +49,16 @@ Square *** setUpPuzzle(int ** puzzle){
             boxes[currentBox]->numbers++;
 
             //replacing bit-wise thing with an initialization loop to set all to zero
-            for (x=0; x< SIZE_ROWS; x++){
+            for (x=0; x< SIZE_ROWS; x++){ 
                 sudoku[i][j]->possible[x] = 0;
-            }
-            if(j==2){
+            } 
+            if(j==2){ 
+                currentBox++;
+            } 
+            if(j==5){ 
                 currentBox++;
             }
-            if(j==5){
-                currentBox++;
-            }
-
+                sudoku[i][j]->possible[x] = 0;
         }
         currentBox -= 2; //Using this to reset back to the first box
         //Special Case: when in Box[2] & row [2] we want to go to the
@@ -70,9 +86,14 @@ Square *** setUpPuzzle(int ** puzzle){
         }
     }
 
-    return sudoku;
+    return createSudoku(sudoku, boxes);
 }
+/*
+ *int UpdateSudoku
 
+ Once a single Square Is solved all other squares along
+ the same row and column must be updated to reflect the change
+ * */
 int updateSudoku(Square *** sudoku, int row, int column){
     int x; //counter variable
     int number = sudoku[row][column]->number; //variable storing the index
@@ -94,7 +115,12 @@ int updateSudoku(Square *** sudoku, int row, int column){
     return 1;
 }
 
-int checkPuzzle(Square *** sudoku){
+/*
+ *int checkPuzzle
+ * 
+ * loop through all squares in the puzzle to check for a solveable square
+ * */
+int checkPuzzle(Square *** sudoku, Box ** boxes){
     int i,j,x; //x is a counter
     //looping through the rows
     for(i=0; i<SIZE_ROWS; i++){
@@ -102,19 +128,28 @@ int checkPuzzle(Square *** sudoku){
         for(j=0; j<SIZE_COLUMNS; j++){
             if(sudoku[i][j]->solveable == 1){ // is the square solveable.?
                 solveSquare(sudoku[i][j]); //this func. will figure out what no. is supposed to go in that square
-                //since we solved a square now that particular no. cant be repeated in
-                //column or that row so we call updateSudoku to update the parameters
+                                          //since we solved a square now that particular no. cant be repeated in
+                                         //column or that row so we call updateSudoku to update the parameters
                 updateSudoku(sudoku, i, j);
                 updateBoxes(sudoku, i, j);
+                
+                return 1;
             }   
         }
     }
-    return 1;
+    if(boxSingles(sudoku, boxes)){
+        return 1;
+    }
+    return checkRows(sudoku, boxes);
 }
 
 
 
-
+/*
+ *int ** createPuzzle()
+ *
+ * Create a double array containing the puzzle
+ * */
 int ** createPuzzle(){
     int ** puzzle;
     int i, j;
@@ -144,6 +179,12 @@ int ** createPuzzle(){
     
 }
 
+
+/*
+ * void PrintPuzzle
+ *
+ * Display the puzzle in a sudoku form
+ * */
 void printPuzzle(Square *** puzzle){
     int i,j;
     printf("-------------------------------\n");
