@@ -32,17 +32,10 @@ Square *** setUpPuzzle(int ** puzzle){
             sudoku[i][j]->box = boxes[currentBox];
             boxes[currentBox]->numbers++;
 
-
-            //we want to add this square to the box and this box to the square (as they both reference each other)
-            boxes[currentBox]->squares[boxes[currentBox]->numbers] = sudoku[i][j];
-            sudoku[i][j]->box = boxes[currentBox];
-            boxes[currentBox]->numbers++;
-
             //replacing bit-wise thing with an initialization loop to set all to zero
             for (x=0; x< SIZE_ROWS; x++){
                 sudoku[i][j]->possible[x] = 0;
             }
-          
             if(j==2){
                 currentBox++;
             }
@@ -68,12 +61,12 @@ Square *** setUpPuzzle(int ** puzzle){
         // loop though columns 
         for(j=0; j<SIZE_COLUMNS; j++){
            //does this number have a value and what dows it tell
-           if(sudoku[i][j]->number != 0){
-                sudoku[i][j]->solveable = 0;
-                updateSudoku(sudoku, i, j);
-                updateBoxes(sudoku, i, j);
-                UNSOLVED--;
-           }
+        if(sudoku[i][j]->number != 0){
+            sudoku[i][j]->solveable = 0;
+            updateSudoku(sudoku, i, j);
+            updateBoxes(sudoku, i, j);
+            UNSOLVED--;
+        }
         }
     }
 
